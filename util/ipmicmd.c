@@ -750,7 +750,15 @@ int ipmi_close_(void)
 }
 
 /* don't worry about conflict with other ipmi libs any longer */
-int ipmi_close(void) {  return(ipmi_close_()); }
+int ipmi_close(void) {
+    if (guser)
+        free(guser);
+    if (gnode)
+        free(gnode);
+    if (gpswd)
+        free(gpswd);
+     return(ipmi_close_()); 
+     }
 
 #if defined(EFI)
 int ipmi_open_efi(int fdebugcmd)
