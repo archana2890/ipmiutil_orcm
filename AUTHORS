@@ -1,0 +1,10 @@
+ipmiutil:
+   Andy Cress <arcress at users.sourceforge.net>
+util/AnsiTerm.cpp
+   Robert Nelson <robertnelson at users.sourceforge.net>
+util/oem_dell.c
+   Harsha S <Harsha_S1 at dell.com>
+util/ihpm.c
+   Frederic.Lelievre@ca.kontron.com, Francois.Isabelle@ca.kontron.com,
+   Jean-Michel.Audet@ca.kontron.com, MarieJosee.Blais@ca.kontron.com
+
