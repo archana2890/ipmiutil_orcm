@@ -1697,7 +1697,7 @@ int ipmi_open_lan(char *node, char *user, char *pswd, int fdebugcmd)
         goto EXIT;
    } else {
 
-        if ((gshutdown==0) || fdebugcmd) 
+       if (fdebugcmd) 
 	   fprintf(fpdbg,"Opening lan connection to node %s ...\n",node);
 	/* save nodename for sig_abort later */
 	if (strlen(node) > SZGNODE) {
@@ -1711,7 +1711,8 @@ int ipmi_open_lan(char *node, char *user, char *pswd, int fdebugcmd)
 
 #ifdef HAVE_IPV6
 	strcpy(gnodename,nodename);
-	fprintf(fpdbg,"Connecting to node %s\n",gnodename);
+	if (fdebugcmd)
+        printf(fpdbg,"Connecting to node %s\n",gnodename);
 #else
 #ifdef WIN32
         /* check for ws2_32.lib(getnameinfo) resolution */
