@@ -3272,6 +3272,9 @@ int i_sensor(int argc, char **argv)
 		if (is_romley(vend_id,prod_id)) fRomley = 1;
 		if (prod_id == 0x003E || fRomley)   /*Urbanna NSN2U,CG2100*/
 		   set_max_kcs_loops(URNLOOPS); /*longer KCS timeout*/
+        } else if ((vend_id == VENDOR_SUPERMICRO)
+                || (vend_id == VENDOR_SUPERMICROX)) {
+                   set_max_kcs_loops(URNLOOPS); /*longer KCS timeout*/
 	} else {   /* Other products */
 		pstr = "BMC";
 		fmBMC = 0;

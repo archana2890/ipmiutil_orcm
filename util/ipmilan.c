@@ -527,7 +527,6 @@ int open_sockfd(char *node, SockType *sfd, SOCKADDR_T  *daddr,
 {
     int rv = 0;
     SockType s, _sockfd = -1;
-
 #ifdef HAVE_IPV6
     struct addrinfo hints;
     struct addrinfo *res, *res0;
@@ -581,15 +580,11 @@ int open_sockfd(char *node, SockType *sfd, SOCKADDR_T  *daddr,
 	 * and) try the next address. 
 	 */
 	for (res0 = res; res0 != NULL; res0 = res0->ai_next) {
+           /* valid protocols are IPPROTO_UDP, IPPROTO_IPV6 */
+	   if (res0->ai_protocol == IPPROTO_TCP) continue;  /*IPMI != TCP*/
 	   s = socket(res0->ai_family, res0->ai_socktype, res0->ai_protocol);
-
 	   if (s == SockInvalid) continue;
 	   else _sockfd = s;
-           /* valid protocols are IPPROTO_UDP, IPPROTO_IPV6 */
-	   if (res0->ai_protocol == IPPROTO_TCP) {
-           close_sockfd(_sockfd);
-           continue;  /*IPMI != TCP*/
-       }
 	   pconn->connect_state = CONN_STATE_SOCK;  
 	   rv = connect(_sockfd, res0->ai_addr, res0->ai_addrlen); 
 	   if (fdebuglan) printf("socket(%d,%d,%d), connect(%d) rv = %d\n",
@@ -598,7 +593,7 @@ int open_sockfd(char *node, SockType *sfd, SOCKADDR_T  *daddr,
 	   if (rv != -1) {
 		memcpy(daddr, res0->ai_addr, res0->ai_addrlen);
 		*daddr_len = res0->ai_addrlen;
-        break;  /* Success */
+		break;  /* Success */
 	   }
 	   close_sockfd(_sockfd);
 	   _sockfd = -1;
@@ -612,7 +607,7 @@ int open_sockfd(char *node, SockType *sfd, SOCKADDR_T  *daddr,
 #else
 	/* Open lan interface (ipv4 method) */
 	s = socket(AF_INET, SOCK_DGRAM, 0); 
-    if (s == SockInvalid) return (-1);
+	if (s == SockInvalid) return (-1);
 	else _sockfd = s;
 
 	pconn->connect_state = CONN_STATE_SOCK;  
@@ -1702,7 +1697,7 @@ int ipmi_open_lan(char *node, char *user, char *pswd, int fdebugcmd)
         goto EXIT;
    } else {
 
-        if (fdebugcmd) 
+        if ((gshutdown==0) || fdebugcmd) 
 	   fprintf(fpdbg,"Opening lan connection to node %s ...\n",node);
 	/* save nodename for sig_abort later */
 	if (strlen(node) > SZGNODE) {
@@ -1716,8 +1711,7 @@ int ipmi_open_lan(char *node, char *user, char *pswd, int fdebugcmd)
 
 #ifdef HAVE_IPV6
 	strcpy(gnodename,nodename);
-    if(fdebugcmd)
-    	fprintf(fpdbg,"Connecting to node %s\n",gnodename);
+	fprintf(fpdbg,"Connecting to node %s\n",gnodename);
 #else
 #ifdef WIN32
         /* check for ws2_32.lib(getnameinfo) resolution */
@@ -1839,7 +1833,10 @@ int ipmi_flush_lan(char *node)
 int ipmi_close_lan(char *node)
 {
    int rv = 0;
+
    /* could match node via pconn = find_conn(node); */
+   if (fdebuglan) fprintf(fpdbg,"ipmi_close_lan(%s) entry, sockfd=%d\n",
+				node,pconn->sockfd);
    if (!nodeislocal(node)) {  /* ipmilan, need to close & cleanup */
 	if (pconn->sockfd != 0) {  /* socket is open */
           if (gshutdown) pconn->session_id = 0;
@@ -1862,6 +1859,8 @@ int ipmi_close_lan(char *node)
 	signal(SIGALRM,SIG_DFL);
 #endif
    }  /* endif */
+   if (fdebuglan) fprintf(fpdbg,"ipmi_close_lan(%s) rv=%d sockfd=%d\n",
+				node,rv,pconn->sockfd);
    return (rv);
 }
  

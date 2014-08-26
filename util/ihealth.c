@@ -725,8 +725,10 @@ void show_devid_all(int dtype, uchar *devrec, int sdevrec)
 		 case 1603:     prodstr = "(X9SPU)"; break; /*0x0643*/
 		 case 1643:     prodstr = "(X9SRL)"; break; /*0x066b*/
 		 case 1797:	prodstr = "(X9DR7)"; break; /*0x0705*/
-		 case 43025:	prodstr = "(H8DGU)"; break;
+		 case 4520:	prodstr = "(H8DGU)"; break;
+		 case 43025:	prodstr = "(H8DGU-F)"; break;
 		 case 43707:	prodstr = "(X8DTH)"; break;
+		 case 48145:	prodstr = "(H8DG6)"; break;
                  default:       prodstr = ""; break;
              }
              if (!fipmilan) lan_ch_restrict = 1; /*fw bug, gets 0xd4 locally*/

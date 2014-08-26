@@ -19,13 +19,18 @@ Requires: systemd-units
 %if 0%{?suse_version} >= 1210
 %define req_systemd 1
 %endif
+%if 0%{?sles_version} >= 10
+BuildRequires: libopenssl-devel 
+%else
+BuildRequires: openssl-devel 
+%endif
 %if 0%{?req_systemd}
-BuildRequires: openssl-devel gcc gcc-c++ libtool systemd
+BuildRequires: gcc gcc-c++ libtool systemd
 %define unit_dir  %{_unitdir}
 %define systemd_fls %{unit_dir}
 # Requires: %{?systemd_requires}
 %else
-BuildRequires: openssl-devel gcc gcc-c++ libtool
+BuildRequires: gcc gcc-c++ libtool
 %if 0%{?fedora} == 16
 %define unit_dir  /lib/systemd/system
 %else

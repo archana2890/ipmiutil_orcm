@@ -4,11 +4,18 @@ IPMIUTIL PROJECT TODO LIST:
 IPV6: 
    . implement IPV6 for Windows
 
+Change ipmicmd.c/ipmilan.c to be thread-safe if accessing multiple nodes.
+   Currently is only conditionally safe, if threads access the same node.
+   Will require adding a context struct param to the ipmi_cmd*() funcs.  
+   Probably need to add new thread-safe functions to retain back-compatibility.
+   PARTIAL in ipmiutil-2.9.0, multiple nodes in sequence is fixed
+   . need to use context structure for ipmilan
+
 stdout/stderr debug messages mixed
    . have a global variable for stderr and if -x debug, set it to stdout.
 
 SuperMicro Users:
-   . implement OEM cmd to set user privilege level
+   . implement an OEM cmd to set user privilege level (needs research)
 
 SPD decoding:
    . expose SPD decoding from file/buffer, not just FRU
@@ -26,12 +33,6 @@ Add DCMI 1.5 commands for NetFn 0x2C to ipmiutil
    .   Get/Set Thermal Limit  (DCMI 1.5)
 
 Add an option/variant of canonical output for CSV (delimiter = ',')
-
-Change ipmicmd.c to be thread-safe if accessing multiple nodes.
-   Currently is only conditionally safe, if threads access the same node.
-   Will require adding a context struct param to the ipmi_cmd*() funcs.  
-   Probably need to add new thread-safe functions to retain back-compatibility.
-   PARTIAL in ipmiutil-2.9.0, multiple nodes in sequence is fixed
 
 Add support for MAC OSX AppleBMC.kext driver
     not yet implemented, pending some documentation.

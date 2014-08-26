@@ -3981,7 +3981,8 @@ wdt.8          iwdt.8       (ipmiutil wdt)
     ipmi_port	(ipmi_port)  		 ver 1.4
 
 06/28/2014 ARCress ipmiutil-2.9.4  changes
-  util/isensor.c      - for -j: more debug output & handle if recid=0
+  util/isensor.c      - for -j: more debug output & handle if recid=0,
+  			longer KCS timeouts for Supermicro
   util/idcmi.c        - cast ulong for << 24
   util/ipmilan.c      - cast ulong for << 24
   util/oem_hp.c       - check unit1 bits last
@@ -3991,8 +3992,11 @@ wdt.8          iwdt.8       (ipmiutil wdt)
   util/ilan.c         - add -O secure option (disable null user, cipher0=off)
   util/ipmild.c       - fix --enable-landesk build error for support-request 9
   util/ipmicmd.c,.h   - fix set_lan_options memory leak to use LAN_OPT
-  util/ipmilan.c      - use LAN_OPT
+  util/ipmilan.c      - use LAN_OPT, fix socket leaking if TCP.
   util/ipmilanplus.c  - use LAN_OPT
+  util/ihealth.c      - added 2 new SuperMicro product ids
+  util/md2.h          - added openssl exception license text also
+  util/Makefile.am    - fix error if INS_LIB
   ipmiutil-2.9.4 contains:
     ipmiutil	(ipmiutil)  	 	 ver 2.94
     ...(various subcommands)	  	 ver 2.94

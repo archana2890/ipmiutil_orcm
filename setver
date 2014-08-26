@@ -117,9 +117,7 @@ then
   ed ../buildipmiutil.sh   <$tmped
 fi
 
-if [ -f ../win32/src/mkzip.bat ]
-then
-  cat - <<%%% >$tmped
+cat - <<%%% >$tmped
 1
 /^set pkgver
 c
@@ -128,7 +126,11 @@ set pkgver=${ver}
 w
 q
 %%%
+if [ -f ../win32/src/mkzip.bat ]; then
   ed ../win32/src/mkzip.bat   <$tmped
+fi
+if [ -f ../win32/src/mkzip32.bat ]; then
+  ed ../win32/src/mkzip32.bat   <$tmped
 fi
 if [ -f ../win32/src/mkzip64.bat ]; then
   ed ../win32/src/mkzip64.bat   <$tmped

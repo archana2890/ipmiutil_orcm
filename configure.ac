@@ -347,7 +347,7 @@ else
      echo $sysname | grep BSD >/dev/null 2>&1
      if test $? -eq 0; then
 	os=bsd
-	OS_CFLAGS="-DBSD"
+	OS_CFLAGS="-DBSD -fPIC"
 	OS_LFLAGS=""
 	OS_DRIVERS="ipmimv.c ipmidir.c"
 	drivers="open direct"
