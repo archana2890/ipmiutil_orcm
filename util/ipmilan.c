@@ -1712,7 +1712,7 @@ int ipmi_open_lan(char *node, char *user, char *pswd, int fdebugcmd)
 #ifdef HAVE_IPV6
 	strcpy(gnodename,nodename);
 	if (fdebugcmd)
-        printf(fpdbg,"Connecting to node %s\n",gnodename);
+        printf(fpdbg,"Connecting to node %s using ilan\n",gnodename);
 #else
 #ifdef WIN32
         /* check for ws2_32.lib(getnameinfo) resolution */
